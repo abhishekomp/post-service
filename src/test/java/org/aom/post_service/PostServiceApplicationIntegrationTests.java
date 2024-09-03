@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.aom.post_service.post.Post;
+import org.aom.post_service.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -73,6 +74,14 @@ class PostServiceApplicationIntegrationTests {
 
 		//assertThat(post).isEqualTo(expectedPost);
 		assertThat(post).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedPost);
+	}
+
+	@Test
+	void shouldThrowExceptionWhenPostIdNotFound() throws Exception {
+		mockMvc.perform(get("/post-api/post/{id}", 1010))
+				.andExpect(status().isNotFound())
+				.andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(PostNotFoundException.class))
+				.andExpect(result -> assertThat(result.getResolvedException().getMessage()).isEqualTo("Post with id 1010 not found"));
 	}
 
 	@Test

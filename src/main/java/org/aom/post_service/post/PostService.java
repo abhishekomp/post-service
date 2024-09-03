@@ -1,5 +1,6 @@
 package org.aom.post_service.post;
 
+import org.aom.post_service.post.exception.PostNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,6 @@ public class PostService {
     }
 
     public Post findById(int id) {
-        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("post not found"));
+        return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(String.format("Post with id %s not found", id)));
     }
 }
