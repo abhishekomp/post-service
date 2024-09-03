@@ -90,7 +90,7 @@ class PostServiceApplicationIntegrationTests {
 
 		//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-		Post requestPostObj = new Post("USER1", "New Post1", "post body1", LocalDate.of(2022, 9, 1), false);
+		Post requestPostObj = new Post("USER3", "New Post1", "post body1", LocalDate.of(2022, 9, 1), false);
 		String requestJson=ow.writeValueAsString(requestPostObj);
 		System.out.println(requestJson);
 
@@ -111,11 +111,11 @@ class PostServiceApplicationIntegrationTests {
 
 		//mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-		Post requestPostObj = new Post("USER1", "New Post9999", "post body1", LocalDate.of(2022, 9, 1), false);
+		Post requestPostObj = new Post("USER3", "New Post1", "post body1", LocalDate.of(2022, 9, 1), false);
 		String requestJson=ow.writeValueAsString(requestPostObj);
 		System.out.println(requestJson);
 
-		MvcResult result = mockMvc.perform(put("/post-api/updatePost/{id}", 101)
+		MvcResult result = mockMvc.perform(put("/post-api/updatePost/{id}", 104)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestJson))
 				.andExpect(status().isAccepted())
