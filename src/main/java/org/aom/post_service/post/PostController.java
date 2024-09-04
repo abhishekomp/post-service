@@ -1,5 +1,6 @@
 package org.aom.post_service.post;
 
+import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,28 +30,34 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<Post> getSinglePost(@PathVariable int id){
-        logger.info("PostController::getSinglePost() was invoked");
-        Post post = postService.findById(id);
+    public ResponseEntity<Post> getSinglePost(@PathVariable @Pattern(regexp = "[0-9]+", message = "id should be all numbers") String id){
+        //String not matching the pattern will result in HandlerMethodValidationException exception and this is handled in the GlobalExceptionHandler class.
+        logger.info("PostController::getSinglePost() was invoked with id: {}", id);
+        Post post = postService.findById(Integer.parseInt(id));
         return ResponseEntity.ok(post);
     }
 
     @GetMapping("/allByUserId")
     public ResponseEntity<List<Post>> getAllPostsByUserId(@RequestParam String userId){
-        logger.info("PostController::getAllPosts() was invoked");
+        logger.info("PostController::getAllPostsByUserId() was invoked");
         List<Post> allPosts = postService.getAllPostsByUserId(userId);
+        logger.debug("PostController::getAllPostsByUserId() received in response {} posts", allPosts.size());
+        logger.trace("PostController::getAllPostsByUserId() received in response {}", allPosts);
         return ResponseEntity.ok(allPosts);
     }
 
     @PostMapping("createPost")
     @ResponseStatus(HttpStatus.CREATED)
     public Post createPost(@RequestBody Post post){
+        logger.info("PostController::createPost() was invoked");
         return postService.createNewPost(post);
     }
 
     @PostMapping("createMultiplePost")
     @ResponseStatus(HttpStatus.CREATED)
     public List<Post> createMultiplePost(@RequestBody List<Post> posts){
+        logger.info("PostController::createMultiplePost() was invoked");
+        logger.debug("PostController::createMultiplePost() was invoked with {}", posts);
         return postService.createMultipleNewPosts(posts);
     }
 

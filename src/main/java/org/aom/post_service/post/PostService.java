@@ -16,20 +16,23 @@ public class PostService {
 
 
     public PostService(PostRepository postRepository) {
+        logger.debug("PostService::constructor() was invoked");
         this.postRepository = postRepository;
     }
 
     List<Post> getAllPosts(){
+        logger.info("PostService::getAllPosts() was invoked");
         return postRepository.findAll();
     }
 
     Post createNewPost(Post post){
-        logger.debug("PostService::createNewPost() received post: {}", post);
+        logger.debug("PostService::createNewPost() was invoked with post: {}", post);
         Post post1 = setToFalseIfIsBlockedIsMissing(post);
         return postRepository.save(post1);
     }
 
     List<Post> createMultipleNewPosts(List<Post> posts){
+        logger.info("PostService::createMultipleNewPosts() was invoked");
         List<Post> posts1 = posts.stream().map(post -> setToFalseIfIsBlockedIsMissing(post))
                 .toList();
         return postRepository.saveAll(posts1);
@@ -43,18 +46,21 @@ public class PostService {
     }
 
     void deleteById(int id){
+        logger.info("PostService::deleteById() was invoked");
         postRepository.deleteById(id);
     }
 
     Post updatePost(Post post, int id){
+        logger.info("PostService::updatePost() was invoked");
+        logger.debug("PostService::updatePost() invoked with post: {} and id: {}", post, id);
         Post postFromDb = findById(id);
         post.setId(id);
         return postRepository.save(post);
     }
 
-    List<Post> getPostByUserId(String userId){
-        return postRepository.findByUserId(userId);
-    }
+//    List<Post> getPostByUserId(String userId){
+//        return postRepository.findByUserId(userId);
+//    }
 
     public List<Post> getAllPostsByUserId(String userId) {
         return postRepository.findAll().stream()
@@ -63,6 +69,8 @@ public class PostService {
     }
 
     public Post findById(int id) {
+        logger.info("PostService::findById() was invoked");
+        logger.debug("PostService::findById() received id: {}", id);
         return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(String.format("Post with id %s not found", id)));
     }
 }
