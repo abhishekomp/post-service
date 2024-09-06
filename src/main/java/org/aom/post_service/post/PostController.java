@@ -80,4 +80,12 @@ public class PostController {
     public Post updatePost(@RequestBody Post post, @PathVariable int id){
         return postService.updatePost(post, id);
     }
+
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable @Pattern(regexp = "[0-9]+", message = "id should be all numbers") String id){
+        //String not matching the pattern will result in HandlerMethodValidationException exception and this is handled in the GlobalExceptionHandler class.
+        logger.info("PostController::deletePost() was invoked with id: {}", id);
+        postService.deletePost(Integer.parseInt(id));
+        return ResponseEntity.ok().build();
+    }
 }

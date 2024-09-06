@@ -49,11 +49,11 @@ public class PostService {
         return post;
     }
 
-    void deleteById(int id){
-        logger.info("PostService::deleteById() was invoked");
-        logger.debug("PostService::deleteById() was invoked with id {}", id);
-        postRepository.deleteById(id);
-    }
+//    void deleteById(int id){
+//        logger.info("PostService::deleteById() was invoked");
+//        logger.debug("PostService::deleteById() was invoked with id {}", id);
+//        postRepository.deleteById(id);
+//    }
 
     Post updatePost(Post post, int id){
         logger.info("PostService::updatePost() was invoked");
@@ -79,5 +79,12 @@ public class PostService {
         logger.info("PostService::findById() was invoked");
         logger.debug("PostService::findById() received id: {}", id);
         return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(String.format("Post with id %s not found", id)));
+    }
+
+    public void deletePost(int postId) {
+        logger.info("PostService::deletePost() was invoked");
+        logger.debug("PostService::deletePost() received id: {}", postId);
+        Post byId = findById(postId);
+        postRepository.deleteById(postId);
     }
 }
