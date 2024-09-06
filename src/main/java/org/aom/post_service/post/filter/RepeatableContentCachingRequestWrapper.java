@@ -5,6 +5,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 
 public class RepeatableContentCachingRequestWrapper extends ContentCachingRequestWrapper {
     public RepeatableContentCachingRequestWrapper (HttpServletRequest request) {
-        super(null);
+        super(request);
     }
 }
