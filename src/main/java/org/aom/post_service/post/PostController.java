@@ -60,8 +60,11 @@ public class PostController {
         logger.info("PostController::createPostV2() was invoked");
         postService.createNewPost(post);
         return ResponseEntity.created(
-                uriComponentsBuilder.path("/post-api/post/{username}").build(post.getId()))
+                uriComponentsBuilder.path("/post-api/post/{userId}").build(post.getId()))
                 .build();
+//        return ResponseEntity.created(
+//                        uriComponentsBuilder.path("/post-api/post/{username}").build(post.getId()))
+//                .body(post);
     }
 
     @PostMapping("createMultiplePost")

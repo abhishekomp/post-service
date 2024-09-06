@@ -1,0 +1,30 @@
+[
+  {
+    "userId": "USER 501",
+    "title": "Post 501",
+    "body": "post body1",
+    "dateAdded": "2005-07-22",
+    "isBlocked": false
+  },
+  {
+    "userId": "USER 502",
+    "title": "Post 502",
+    "body": "post body2",
+    "dateAdded": "2006-04-14",
+    "isBlocked": false
+  },
+  {
+    "userId": "USER 503",
+    "title": "Post 503",
+    "body": "post body3",
+    "dateAdded": "2007-11-26",
+    "isBlocked": true
+  },
+  {
+    "userId": "USER 501",
+    "title": "Post 504",
+    "body": "post body4",
+    "dateAdded": "2008-10-06",
+    "isBlocked": true
+  }
+]
