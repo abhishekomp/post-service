@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -51,6 +52,16 @@ public class PostController {
     public Post createPost(@RequestBody Post post){
         logger.info("PostController::createPost() was invoked");
         return postService.createNewPost(post);
+    }
+
+    @PostMapping("createPostV2")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> createPostV2(@RequestBody Post post, UriComponentsBuilder uriComponentsBuilder){
+        logger.info("PostController::createPostV2() was invoked");
+        postService.createNewPost(post);
+        return ResponseEntity.created(
+                uriComponentsBuilder.path("/post-api/post/{username}").build(post.getId()))
+                .build();
     }
 
     @PostMapping("createMultiplePost")
