@@ -14,7 +14,6 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-
     public PostService(PostRepository postRepository) {
         logger.debug("PostService::constructor() was invoked");
         this.postRepository = postRepository;
@@ -26,27 +25,33 @@ public class PostService {
     }
 
     Post createNewPost(Post post){
+        logger.info("PostService::createNewPost() was invoked");
         logger.debug("PostService::createNewPost() was invoked with post: {}", post);
         Post post1 = setToFalseIfIsBlockedIsMissing(post);
+        logger.debug("PostService::createNewPost() returning post: {}", post1);
         return postRepository.save(post1);
     }
 
     List<Post> createMultipleNewPosts(List<Post> posts){
         logger.info("PostService::createMultipleNewPosts() was invoked");
+        logger.debug("PostService::createMultipleNewPosts() was invoked with posts {}", posts);
         List<Post> posts1 = posts.stream().map(post -> setToFalseIfIsBlockedIsMissing(post))
                 .toList();
         return postRepository.saveAll(posts1);
     }
 
     private Post setToFalseIfIsBlockedIsMissing(Post post) {
+        logger.debug("PostService::setToFalseIfIsBlockedIsMissing() was invoked with post {}", post);
         if(post.getBlocked() == null){
             post.setBlocked(false);
         }
+        logger.debug("PostService::setToFalseIfIsBlockedIsMissing() returning post {}", post);
         return post;
     }
 
     void deleteById(int id){
         logger.info("PostService::deleteById() was invoked");
+        logger.debug("PostService::deleteById() was invoked with id {}", id);
         postRepository.deleteById(id);
     }
 
@@ -63,6 +68,8 @@ public class PostService {
 //    }
 
     public List<Post> getAllPostsByUserId(String userId) {
+        logger.info("PostService::getAllPostsByUserId() was invoked");
+        logger.debug("PostService::getAllPostsByUserId() invoked with userId: {}", userId);
         return postRepository.findAll().stream()
                 .filter(post -> userId.equalsIgnoreCase(post.getUserId()))
                 .toList();

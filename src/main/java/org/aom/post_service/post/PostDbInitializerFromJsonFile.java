@@ -30,6 +30,7 @@ public class PostDbInitializerFromJsonFile implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.info("Attempting to read posts.json file to load into the database");
+        //List<Post> posts = objectMapper.readValue("classpath:posts.json", new TypeReference<List<Post>>() {});
         List<Post> posts = objectMapper.readValue(new File("src/main/resources/posts.json"), new TypeReference<List<Post>>() {});
         postRepository.saveAll(posts);
         logger.info("posts.json file read and data loaded to the database");

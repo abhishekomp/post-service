@@ -53,7 +53,6 @@ public class GlobalExceptionHandler {
                 .body(errObj);
 
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleAllOtherException(Exception ex){
         logger.info("GlobalExceptionHandler:handleAllOtherException() called with exception: {}", ex.getMessage());
