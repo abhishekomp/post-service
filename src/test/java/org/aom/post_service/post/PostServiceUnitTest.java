@@ -1,5 +1,6 @@
 package org.aom.post_service.post;
 
+import org.aom.post_service.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -8,7 +9,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class PostServiceUnitTest {
 
@@ -37,5 +43,23 @@ class PostServiceUnitTest {
         assertThat(posts).hasSize(2)
                 .extracting(Post::getTitle)
                 .containsExactlyInAnyOrder("post1", "post3");
+    }
+
+    @Test
+    public void getSinglePostShouldThrowExceptionWhenPostDoesNotExistInDb() {
+        //given
+        int postId = 99999;
+        given(postRepository.findById(postId)).willThrow(new PostNotFoundException(String.format("Post with id %s not found", postId)));
+
+        //when
+        //postService.findById(postId);
+
+        //then
+        assertThatThrownBy(() -> postService.findById(postId))
+                .isInstanceOf(PostNotFoundException.class)
+                .hasMessage(String.format("Post with id %s not found", postId));
+
+        //exact number of invocations verification
+        verify(postRepository, times(1)).findById(postId);
     }
 }
